@@ -34,6 +34,4 @@ class Database
 
 //print_r(Database::request("SELECT * FROM utilisateurs"));
 
-
-
 ?>
