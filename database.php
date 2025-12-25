@@ -1,24 +1,39 @@
 <?php
-$database = new mysqli("localhost", "root", "", "zoo_assad");
 
-function extract_rows($table){
-    $rowsArray = [];
-    while($row = $table->fetch_assoc()){
-        array_push($rowsArray, $row);
+class Database
+{
+    private static ?PDO $existence = null;
+
+    public static function connect(): PDO
+    {
+        if(self::$existence === null)
+        {
+            self::$existence = new PDO(
+                "mysql:host=localhost;dbname=zoo_assad;charset=utf8",
+                "root",
+                "",
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                ]
+            );
+        }
+        return self::$existence;
     }
-    return $rowsArray;
+
+    public static function request(string $command, array $values = []): array
+    {
+        $db = self::connect();
+        $pre = $db->prepare($command);
+        $pre->execute($values);
+
+        return $pre->fetchAll();
+    }
 }
 
-function request($command, $param, $values){
-    global $database;
-    $pre = $database->prepare($command);
-    if($param && $values) $pre->bind_param($param, ...$values);
-    $pre->execute();
-    $result = $pre->get_result();
-    $pre->close();
 
-    return $result;
-}
+//print_r(Database::request("SELECT * FROM utilisateurs"));
 
-//$database->close();
+
+
 ?>
