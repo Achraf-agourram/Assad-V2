@@ -10,9 +10,9 @@ class User
     protected $motpasse;
     protected $pays;
 
-    public function login(string $email): bool
+    public function login(): bool
     {
-        $user = Database::request("SELECT * FROM utilisateurs WHERE email = ?", [$email]);
+        $user = Database::request("SELECT * FROM utilisateurs WHERE email = ?", [$this->email]);
         if($user)
         {
             $_SESSION['loggedAccount'] = $user[0]['id'];
@@ -26,9 +26,9 @@ class User
         $_SESSION['loggedAccount'] = null;
     }
     
-    public function searchUser(string $name): array
+    public function searchUser(): array
     {
-        return Database::request("SELECT * FROM utilisateurs WHERE nom = ?", [$name]);
+        return Database::request("SELECT * FROM utilisateurs WHERE nom = ?", [$this->nom]);
     }
 
     // setter
@@ -54,7 +54,7 @@ class User
     }
     public function setCountry(string $pays): void
     {
-        $this->id = $pays;
+        $this->pays = $pays;
     }
     //getter
 
