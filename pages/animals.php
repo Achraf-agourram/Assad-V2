@@ -4,14 +4,14 @@ require_once 'header.php';
 require_once '../model/animal.php';
 
 $animals = Animal::getAnimals();
-// $habitatsToFilter = extract_rows(request("SELECT DISTINCT habitats.h_name FROM `animaux` JOIN habitats ON animaux.id_habitat = habitats.id;", null, null));
-// $countriesToFilter = extract_rows(request("SELECT DISTINCT paysorigine FROM `animaux`;", null, null));
+$habitatsToFilter = Animal::getHabitatsToFilter();
+$countriesToFilter = Animal::getCountiesToFilter();
 
-// if(isset($_GET['filter'])){
-//     $habitat = $_GET['habitats-to-filter'] ?: null;
-//     $country = $_GET['countries-to-filter'] ?: null;
-//     $animals = extract_rows(request("SELECT nom, espece, alimentation, image, paysorigine, descriptioncourte, nb_consultations, habitats.h_name FROM animaux JOIN habitats ON animaux.id_habitat = habitats.id WHERE (habitats.h_name = ? OR ? IS NULL) AND (paysorigine = ? OR ? IS NULL);", "ssss", [$habitat, $habitat, $country, $country]));
-// }
+if(isset($_GET['filter'])){
+    $habitat = $_GET['habitats-to-filter'] ?: null;
+    $country = $_GET['countries-to-filter'] ?: null;
+    $animals = Animal::getFiltredAnimals($habitat, $country);
+}
 ?>
 
 
@@ -25,14 +25,14 @@ $animals = Animal::getAnimals();
         <h2 class="text-3xl font-bold text-orange-500 mb-8 border-b-2 border-orange-600 pb-2">🌍 Explorer les Animaux
             Africains</h2>
 
-        <!--form method="GET" class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <form method="GET" class="bg-white p-6 rounded-lg shadow-md mb-8">
             <div class="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
 
                 <select name="habitats-to-filter" class="p-3 border border-gray-300 rounded-lg bg-white w-full">
                     <option value="">Tous les Habitats</option>
                     <?php
                         foreach($habitatsToFilter as $habitat){
-                            echo "<option value='{$habitat['h_name']}'>{$habitat['h_name']}</option>";
+                            echo "<option value='{$habitat->h_name}'>{$habitat->h_name}</option>";
                         }
                     ?>
                 </select>
@@ -41,7 +41,7 @@ $animals = Animal::getAnimals();
                     <option value="">Tous les Pays Africaines</option>
                     <?php
                         foreach($countriesToFilter as $country){
-                            echo "<option value='{$country['paysorigine']}'>{$country['paysorigine']}</option>";
+                            echo "<option value='{$country->paysorigine}'>{$country->paysorigine}</option>";
                         }
                     ?>
                 </select>
@@ -51,7 +51,7 @@ $animals = Animal::getAnimals();
                     Appliquer
                 </button>
             </div>
-        </form-->
+        </form>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 

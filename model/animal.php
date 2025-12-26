@@ -54,6 +54,22 @@ class Animal
         return $animals;
     }
     
+    public static function getHabitatsToFilter(): array
+    {
+        return Database::request("SELECT DISTINCT habitats.h_name FROM `animaux` JOIN habitats ON animaux.id_habitat = habitats.id;", []);
+    }
+
+    public static function getCountiesToFilter(): array
+    {
+        return Database::request("SELECT DISTINCT paysorigine FROM `animaux`;", []);
+    }
+    public static function getFiltredAnimals(?string $habitat, ?string $country): array
+    {
+        $animals = [];
+        $result = Database::request("SELECT animaux.*, habitats.h_name FROM animaux JOIN habitats ON animaux.id_habitat = habitats.id WHERE (habitats.h_name = ? OR ? IS NULL) AND (paysorigine = ? OR ? IS NULL);", [$habitat, $habitat, $country, $country]);
+        foreach($result as $animal) array_push($animals, new Animal($animal->id, $animal->nom, $animal->espece, $animal->alimentation, $animal->image, $animal->paysorigine, $animal->descriptioncourte, $animal->nb_consultations, $animal->h_name));
+        return $animals;
+    }
 
     public function getId(): int
     {
