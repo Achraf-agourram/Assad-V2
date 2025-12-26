@@ -10,6 +10,16 @@ class User
     protected $motpasse;
     protected $pays;
 
+    public function __construct(int $id, string $nom, string $email, string $role, string $motpasse, string $pays)
+    {
+        $this->id = $id;
+        $this->nom = $nom;
+        $this->email = $email;
+        $this->role = $role;
+        $this->motpasse = $motpasse;
+        $this->pays = $pays;
+    }
+
     public function login(): bool
     {
         $user = Database::request("SELECT * FROM utilisateurs WHERE email = ?", [$this->email]);

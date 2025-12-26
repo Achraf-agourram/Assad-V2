@@ -7,6 +7,13 @@ class Guide extends User
     private $approuveGuide;
     private $statutCompte;
 
+    public function __construct(int $id, string $nom, string $email, string $role, string $motpasse, string $pays, int $approuveGuide, int $statutCompte)
+    {
+        parent::__construct($id, $nom, $email, $role, $motpasse, $pays);
+        $this->approuveGuide = $approuveGuide;
+        $this->statutCompte  = $statutCompte;
+    }
+
     public function approuveGuide(): void
     {
         Database::request("UPDATE `utilisateurs` SET role_approuve = 1 WHERE email = ?;", [$this->email]);
