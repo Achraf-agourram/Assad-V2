@@ -1,5 +1,4 @@
 <?php
-    require_once '../model/user.php';
     $paysCAN = ['Maroc','Sénégal','Égypte','Algérie','Tunisie','Nigeria','Ghana','Cameroun','Côte d’Ivoire','Mali','Burkina Faso','Afrique du Sud','RD Congo','Zambie','Guinée','Guinée équatoriale','Cap-Vert','Angola','Mozambique','Namibie','Tanzanie','Ouganda','Bénin','Gabon'];
 
     $connectedUser = null;

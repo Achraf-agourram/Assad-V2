@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../model/user.php';
 require_once 'header.php';
 require_once '../model/animal.php';
 
