@@ -35,6 +35,11 @@ class User
     {
         $_SESSION['loggedAccount'] = null;
     }
+
+    public function register(): void
+    {
+        Database::request("INSERT INTO `utilisateurs`(`nom`, `email`, `role`, `motpasse_hash`, `pays`, `statut_compte`) VALUES (?, ?, ?, ?, ?, ?);", [$this->nom, $this->email, $this->role, $this->motpasse, $this->pays, $this->statutCompte]);
+    }
     
     public function searchUser(): array
     {
