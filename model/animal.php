@@ -11,9 +11,9 @@ class Animal
     private $paysorigine;
     private $descriptioncourte;
     private $nb_consultations;
-    private $id_habitat;
+    private $h_name;
 
-    public function __construct(int $id, string $nom, string $espece, string $alimentation, string $image, string $paysorigine, string $descriptioncourte, int $nb_consultations, int $id_habitat)
+    public function __construct(int $id, string $nom, string $espece, string $alimentation, string $image, string $paysorigine, string $descriptioncourte, int $nb_consultations, string $h_name)
     {
         $this->id = $id;
         $this->nom = $nom;
@@ -23,7 +23,7 @@ class Animal
         $this->paysorigine = $paysorigine;
         $this->descriptioncourte = $descriptioncourte;
         $this->nb_consultations = $nb_consultations;
-        $this->id_habitat = $id_habitat;
+        $this->h_name = $h_name;
     }
 
     public function addAnimal(): void
@@ -46,9 +46,12 @@ class Animal
     {
         Database::request("DELETE FROM `animaux` WHERE id = ?;", [$this->id]);
     }
-    public function getAnimals(): array
+    public static function getAnimals(): array
     {
-        return Database::request("SELECT animaux.*, habitats.h_name FROM `animaux` JOIN habitats ON animaux.id_habitat = habitats.id;");
+        $animals = [];
+        $result = Database::request("SELECT animaux.*, habitats.h_name FROM `animaux` JOIN habitats ON animaux.id_habitat = habitats.id;");
+        foreach($result as $animal) array_push($animals, new Animal($animal->id, $animal->nom, $animal->espece, $animal->alimentation, $animal->image, $animal->paysorigine, $animal->descriptioncourte, $animal->nb_consultations, $animal->h_name));
+        return $animals;
     }
     
 
@@ -92,9 +95,9 @@ class Animal
         return $this->nb_consultations;
     }
 
-    public function getIdHabitat(): int
+    public function getHabitat(): string
     {
-        return $this->id_habitat;
+        return $this->h_name;
     }
 
 
@@ -133,9 +136,10 @@ class Animal
         $this->nb_consultations = $nb_consultations;
     }
 
-    public function setIdHabitat(int $id_habitat): void
+    public function setIdHabitat(int $h_name): void
     {
-        $this->id_habitat = $id_habitat;
+        $this->h_name = $h_name;
     }
 }
+
 ?>

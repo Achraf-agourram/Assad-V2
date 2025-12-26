@@ -1,8 +1,9 @@
 <?php
 session_start();
-
 require_once 'header.php';
-// $animals = extract_rows(request("SELECT nom, espece, alimentation, image, paysorigine, descriptioncourte, nb_consultations, habitats.h_name FROM `animaux` JOIN habitats ON animaux.id_habitat = habitats.id;", null, null));
+require_once '../model/animal.php';
+
+$animals = Animal::getAnimals();
 // $habitatsToFilter = extract_rows(request("SELECT DISTINCT habitats.h_name FROM `animaux` JOIN habitats ON animaux.id_habitat = habitats.id;", null, null));
 // $countriesToFilter = extract_rows(request("SELECT DISTINCT paysorigine FROM `animaux`;", null, null));
 
@@ -50,23 +51,23 @@ require_once 'header.php';
                     Appliquer
                 </button>
             </div>
-        </form>
+        </form-->
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 
             <?php
                 foreach($animals as $animal){
                     echo "
-                        <div title='{$animal['descriptioncourte']}' class='bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition duration-300 ease-in-out'>
-                            <img src='../images/{$animal['image']}' alt='{$animal['nom']}'
+                        <div title='{$animal->getDescriptionCourte()}' class='bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition duration-300 ease-in-out'>
+                            <img src='../images/{$animal->getImage()}' alt='{$animal->getNom()}'
                                 class='w-full h-48 object-cover'>
                             <div class='p-4'>
-                                <h3 class='text-xl font-bold text-gray-900'>{$animal['nom']}</h3>
-                                <p class='text-sm text-gray-600'>Espèce: *{$animal['espece']}*</p>
+                                <h3 class='text-xl font-bold text-gray-900'>{$animal->getNom()}</h3>
+                                <p class='text-sm text-gray-600'>Espèce: *{$animal->getEspece()}*</p>
                                 <div class='mt-2 text-xs font-semibold'>
                                     <span
-                                        class='inline-block bg-orange-200 text-orange-800 rounded-full px-3 py-1 mr-2'>{$animal['paysorigine']}</span>
-                                    <span class='inline-block bg-yellow-200 text-yellow-800 rounded-full px-3 py-1'>{$animal['h_name']}</span>
+                                        class='inline-block bg-orange-200 text-orange-800 rounded-full px-3 py-1 mr-2'>{$animal->getPaysOrigine()}</span>
+                                    <span class='inline-block bg-yellow-200 text-yellow-800 rounded-full px-3 py-1'>{$animal->getHabitat()}</span>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +75,7 @@ require_once 'header.php';
                 }
             ?>
 
-        </div-->
+        </div>
     </main>
 
 </body>
