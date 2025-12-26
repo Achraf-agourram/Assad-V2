@@ -1,7 +1,7 @@
 <?php
 require_once '../Database.php';
 
-class Habitat
+class Animal
 {
     private $id;
     private $nom;
@@ -33,10 +33,14 @@ class Habitat
     public function editAnimal($nom, $espece, $alimentation, $image, $paysorigine, $descriptioncourte, $nb_consultations, $id_habitat): void
     {
         Database::request("UPDATE `animals` SET nom = ?, espece = ?, alimentation = ?, image = ?, paysorigine = ?, descriptioncourte = ?, nb_consultations = ?, id_habitat = ? WHERE id = ?;", [$nom, $espece, $alimentation, $image, $paysorigine, $descriptioncourte, $nb_consultations, $id_habitat, $this->id]);
-        $this->nom;
-        $this->typeClimat;
-        $this->description;
-        $this->zonezoo;
+        $this->nom = $nom;
+        $this->espece = $espece;
+        $this->alimentation = $alimentation;
+        $this->image = $image;
+        $this->paysorigine = $paysorigine;
+        $this->descriptioncourte = $descriptioncourte;
+        $this->nb_consultations = $nb_consultations;
+        $this->id_habitat = $id_habitat;
     }
     public function deleteAnimal(): void
     {

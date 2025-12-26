@@ -25,10 +25,10 @@ class Habitat
     public function editHabitat($nom, $typeClimat, $description, $zonezoo): void
     {
         Database::request("UPDATE `habitats` SET h_name = ?, typeclimat = ?, description = ?, zonezoo = ? WHERE id = ?;", [$nom, $typeClimat, $description, $zonezoo, $this->id]);
-        $this->nom;
-        $this->typeClimat;
-        $this->description;
-        $this->zonezoo;
+        $this->nom = $nom;
+        $this->typeClimat = $typeClimat;
+        $this->description = $description;
+        $this->zonezoo = $zonezoo;
     }
     public function deleteHabitat(): void
     {
