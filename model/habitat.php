@@ -35,7 +35,7 @@ class Habitat
         Database::request("DELETE FROM `habitats` WHERE id = ?;", [$this->id]);
     }
     
-    // getter
+
     public function getId(): int
     {
         return $this->id;
@@ -57,7 +57,7 @@ class Habitat
         return $this->zonezoo;
     }
 
-    //setter
+
     public function setName(string $name): void
     {
         $this->nom = $name;

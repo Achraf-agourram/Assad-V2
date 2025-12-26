@@ -46,7 +46,7 @@ class User
         return Database::request("SELECT * FROM utilisateurs WHERE nom = ?", [$this->nom]);
     }
 
-    // setter
+
     public function setId(int $id): void
     {
         $this->id = $id;
@@ -71,7 +71,6 @@ class User
     {
         $this->pays = $pays;
     }
-    //getter
 
     public function getId(): int
     {

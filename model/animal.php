@@ -30,7 +30,7 @@ class Animal
     {
         Database::request("INSERT INTO `animaux` (`nom`, `espece`, `alimentation`, `image`, `paysorigine`, `descriptioncourte`, `nb_consultations`, `id_habitat`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);", [$this->nom, $this->espece, $this->alimentation, $this->image, $this->paysorigine, $this->descriptioncourte, $this->nb_consultations, $this->id_habitat]);
     }
-    public function editAnimal($nom, $espece, $alimentation, $image, $paysorigine, $descriptioncourte, $nb_consultations, $id_habitat): void
+    public function editAnimal(string $nom, string $espece, string $alimentation, string $image, string $paysorigine, string $descriptioncourte, int $nb_consultations, int $id_habitat): void
     {
         Database::request("UPDATE `animals` SET nom = ?, espece = ?, alimentation = ?, image = ?, paysorigine = ?, descriptioncourte = ?, nb_consultations = ?, id_habitat = ? WHERE id = ?;", [$nom, $espece, $alimentation, $image, $paysorigine, $descriptioncourte, $nb_consultations, $id_habitat, $this->id]);
         $this->nom = $nom;
@@ -46,12 +46,12 @@ class Animal
     {
         Database::request("DELETE FROM `animaux` WHERE id = ?;", [$this->id]);
     }
-    public function showAnimal(): array
+    public function getAnimals(): array
     {
-        return Database::request("SELECT * FROM `animaux`;");
+        return Database::request("SELECT animaux.*, habitats.h_name FROM `animaux` JOIN habitats ON animaux.id_habitat = habitats.id;");
     }
     
-    // getters
+
     public function getId(): int
     {
         return $this->id;
@@ -97,7 +97,7 @@ class Animal
         return $this->id_habitat;
     }
 
-    // setters
+
     public function setNom(string $nom): void
     {
         $this->nom = $nom;
