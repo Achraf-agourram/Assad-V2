@@ -7,9 +7,15 @@ class Guide extends User
     private $approuveGuide;
     private $statutCompte;
 
-    public function __construct(int $id, string $nom, string $email, string $role, string $motpasse, string $pays, int $approuveGuide, int $statutCompte)
+    public function __construct(int $id, string $nom, string $email, string $role, string $motpasse, string $pays, string $created_at, int $approuveGuide, int $statutCompte)
     {
-        parent::__construct($id, $nom, $email, $role, $motpasse, $pays);
+        $this->id = $id;
+        $this->nom = $nom;
+        $this->email = $email;
+        $this->role = $role;
+        $this->motpasse = $motpasse;
+        $this->pays = $pays;
+        $this->created_at = $created_at;
         $this->approuveGuide = $approuveGuide;
         $this->statutCompte  = $statutCompte;
     }

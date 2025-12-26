@@ -1,5 +1,8 @@
 <?php
 require_once '../Database.php';
+require_once 'visitor.php';
+require_once 'guide.php';
+require_once 'admin.php';
 
 class User
 {
@@ -9,36 +12,38 @@ class User
     protected $role;
     protected $motpasse;
     protected $pays;
+    protected $created_at;
 
-    public function __construct(int $id, string $nom, string $email, string $role, string $motpasse, string $pays)
+    public static function login(string $email, string $password): ?User
     {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->email = $email;
-        $this->role = $role;
-        $this->motpasse = $motpasse;
-        $this->pays = $pays;
-    }
-
-    public function login(): bool
-    {
-        $user = Database::request("SELECT * FROM utilisateurs WHERE email = ?", [$this->email]);
+        $user = Database::request("SELECT * FROM utilisateurs WHERE email = ? AND motpasse_hash = ?", [$email, $password]);
+        
         if($user)
         {
-            $_SESSION['loggedAccount'] = $user[0]['id'];
-            return true;
+            $user = $user[0];
+            $_SESSION['loggedAccount'] = $user->id;
+            if($user->role === 'visiteur') return new Visitor($user->id, $user->nom, $user->email, $user->role, $user->motpasse_hash, $user->pays, $user->created_at, $user->statut_compte);
+            else if($user->role === 'guide') return new Guide($user->id, $user->nom, $user->email, $user->role, $user->motpasse_hash, $user->pays, $user->created_at, $user->role_approuve, $user->statut_compte);
+            else if($user->role === 'admin') return new Admin($user->id, $user->nom, $user->email, $user->role, $user->motpasse_hash, $user->pays, $user->created_at);
         }
-        return false;
+        return null;
+    }
+
+    public static function findById(int $id): ?User
+    {
+        $user = Database::request("SELECT * FROM utilisateurs WHERE id = ?", [$id]);
+        if($user) return self::login($user[0]->email, $user[0]->motpasse_hash);
+        return null;
     }
 
     public function logout(): void
     {
-        $_SESSION['loggedAccount'] = null;
+        session_destroy();
     }
 
-    public function register(): void
+    public static function register(string $nom, string $email, string $role, string $motpasse, string $pays): void
     {
-        Database::request("INSERT INTO `utilisateurs`(`nom`, `email`, `role`, `motpasse_hash`, `pays`, `statut_compte`) VALUES (?, ?, ?, ?, ?, ?);", [$this->nom, $this->email, $this->role, $this->motpasse, $this->pays, $this->statutCompte]);
+        Database::request("INSERT INTO `utilisateurs`(`nom`, `email`, `role`, `motpasse_hash`, `pays`) VALUES (?, ?, ?, ?, ?);", [$nom, $email, $role, $motpasse, $pays]);
     }
     
     public function searchUser(): array
@@ -71,6 +76,10 @@ class User
     {
         $this->pays = $pays;
     }
+    public function setTime(string $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
 
     public function getId(): int
     {
@@ -96,8 +105,10 @@ class User
     {
         return $this->pays;
     }
+    public function getTime(): string
+    {
+        return $this->created_at;
+    }
 }
-
-
 
 ?>
