@@ -22,7 +22,7 @@ class Habitat
     {
         Database::request("INSERT INTO `habitats` (h_name, typeclimat, description, zonezoo) VALUES (?, ?, ?, ?);", [$this->nom, $this->typeClimat, $this->description, $this->zonezoo]);
     }
-    public function editHabitat($nom, $typeClimat, $description, $zonezoo): void
+    public function editHabitat(string $nom, string $typeClimat, string $description, string $zonezoo): void
     {
         Database::request("UPDATE `habitats` SET h_name = ?, typeclimat = ?, description = ?, zonezoo = ? WHERE id = ?;", [$nom, $typeClimat, $description, $zonezoo, $this->id]);
         $this->nom = $nom;

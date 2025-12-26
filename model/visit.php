@@ -36,9 +36,9 @@ class Visit
     {
         Database::request("DELETE FROM `visitesguidees` WHERE id = ?;", [$this->id]);
     }
-    public function editVisit() : void
+    public function editVisit(int $id, string $titre, string $description, string $dateheure, string $langue, int $capacite_max, int $duree, float $prix, string $statut, int $id_guide) : void
     {
-        
+        Database::request("UPDATE `visitesguidees` SET titre=?, description=?, dateheure=?, langue=?, capacite_max=?, duree=?, prix=?, statut=?, id_guide=? WHERE id = ?", []);
     }
 }
 
